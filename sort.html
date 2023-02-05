@@ -1,0 +1,164 @@
+html>
+  <title>
+    Insert Sort
+  </title>
+  <body>
+    
+    <input
+      type="button"
+      onclick="generateArray()"
+      value="Generate Array"
+      style="
+        font-size: 30px;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+      "
+      id="generateButton"
+    />
+
+    <div><p>&nbsp</p></div>
+    <input
+      type="button"
+      onclick="insertionSort(array)"
+      value="Sort Array"
+      style="
+        font-size: 30px;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+      "
+      id="sortButton"
+      disabled="true;"
+    />
+
+    <div></div>
+    <pre id="originalArray" 
+    style="
+    font-size: 30px;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+  "></pre>
+    ''
+    <div></div>
+
+    <pre id="arrPrintSorted" 
+    style="
+    font-size: 30px;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+  "></pre>
+
+<div></div>
+    <canvas id="Canvas" 
+    width="500" 
+    height="600" 
+    style="
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+  "> ></canvas>
+
+    <script>
+      var array;
+      function generateArray() {
+        for (array = [], i = 1; i < 11; ++i) array[i-1] = i;
+        array = shuffle(array);
+        document.getElementById("originalArray").innerHTML = "Original: " + array;
+        document.getElementById("sortButton").disabled = false;
+        document.getElementById("generateButton").disabled = true;
+        document.getElementById("arrPrintSorted").innerHTML = " ";
+        var canvas = document.getElementById("Canvas");
+          var ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+      }
+
+      var sortCounter = 1;
+      function insertionSort(arr) {
+        if (sortCounter < 10) {
+          let currentValue = arr[sortCounter];
+          let j;
+          for (j = sortCounter - 1; j >= 0 && arr[j] > currentValue; j--) {
+            arr[j + 1] = arr[j];
+          }
+          arr[j + 1] = currentValue; 
+          sortCounter = sortCounter + 1;
+          document.getElementById("arrPrintSorted").innerHTML = "Sorted: " + arr;
+          draw(arr);
+        }
+        else {document.getElementById("sortButton").disabled = true;
+              document.getElementById("generateButton").disabled = false;
+              sortCounter = 1;
+                }
+      }
+
+      function draw(arr){
+          var canvas = document.getElementById("Canvas");
+          var ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.strokeRect(0, 0, canvas.width, canvas.height);
+          for (let i = 50; i < 500; i = i + 50){
+            ctx.beginPath();  
+            ctx.moveTo(i,0);6
+            ctx.lineTo(i,600);  
+            ctx.stroke();
+          }
+
+          for (let i = 50; i < 600; i = i + 50){
+            ctx.beginPath();  
+            ctx.moveTo(0,i);6
+            ctx.lineTo(500,i);  
+            ctx.stroke();
+          }
+          for (let i = 11; i >= 0; i--){
+            drawRect(i * 50, arr[i] * 50);
+          }
+          
+      }
+ 
+      function drawRect(xpos, ypos) {
+        var canvas = document.getElementById("Canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        var width = 50;
+        var height = -ypos;
+        var x = xpos;
+        var y = 600;
+        ctx.fillStyle = "#FF0000";
+        ctx.rect(x, y, width, height);
+        ctx.fill();
+        ctx.stroke();
+        for (let i = 0; i < 12; i++){
+            ctx.fillStyle = "#000000";
+            ctx.font = '20px Arial';
+            ctx.fillText(i,5,595-i*50); 
+          }
+        
+      }
+
+    
+
+      function shuffle(array) {
+        var tmp,
+          current,
+          top = array.length;
+        if (top)
+          while (--top) {
+            current = Math.floor(Math.random() * (top + 1));
+            tmp = array[current];
+            array[current] = array[top];
+            array[top] = tmp;
+          }
+        return array;
+      }
+    </script>
+  </body>
+</html>
